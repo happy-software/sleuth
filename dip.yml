@@ -1,0 +1,26 @@
+version: '2'
+
+compose:
+  files:
+    - docker-compose.yml
+
+interaction:
+  bash:
+    service: app
+    command: '/bin/bash'
+  rake:
+    service: app
+    command: bundle exec rake
+  rails:
+    service: app
+    command: bundle exec rails
+  rspec:
+    service: app
+    command: bundle exec rspec
+  psql:
+    service: postgres
+    command: psql -h postgres -U postgres
+
+provision:
+  - dip compose down --volumes
+  - dip compose up -d postgres redis
