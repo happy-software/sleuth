@@ -37,3 +37,9 @@ Style/Documentation:
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: consistent_comma
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/WordArray:
+  EnforcedStyle: brackets
