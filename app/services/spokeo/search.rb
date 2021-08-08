@@ -1,6 +1,6 @@
 module Spokeo
   class Search
-    Url = "https://www.spokeo.com"
+    Url = "https://www.spokeo.com".freeze
 
     def initialize(name:, state:, city: nil)
       @name = name
@@ -26,7 +26,7 @@ module Spokeo
       listings.map do |listing|
         Spokeo::Domain::Person.new(
           full_name: listing.name,
-          profile_url: listing.url,
+          profile_url: "#{Url}#{listing.url}",
           age: listing.age,
           related_to: listing.relatives,
           addresses: listing.addresses,

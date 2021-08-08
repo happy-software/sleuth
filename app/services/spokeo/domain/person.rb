@@ -18,10 +18,10 @@ module Spokeo
         name
       end
 
-      def lived_in?(state:, currently: false, city: nil)
+      def lived_in?(state:, city: nil, currently: false)
         addresses.any? do |addr|
           next false if city.present? && addr.city != city
-          next false if currently && !addr.currently
+          next false if currently && !addr.current
 
           addr.state == state
         end
