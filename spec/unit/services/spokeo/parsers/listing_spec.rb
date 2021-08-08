@@ -7,20 +7,18 @@ describe Spokeo::Parsers::Listing do
 
   subject { described_class.new(listing) }
 
-  describe "attributes" do
-    it do
-      is_expected.to have_attributes(
-        name: "Claire Therese Riley",
-        age: 73,
-        relatives: ["Michelle Riley", "Kathleen Riley", "Patrick Riley", "John Riley"],
-        addresses: include(
-          an_instance_of(Spokeo::Domain::SimpleAddress)
-          .and have_attributes(
-            city: "Boulder", state: "CO", current: true
-          )
-        ),
-        url: a_string_including("/Claire-Riley/Colorado/Boulder")
-      )
-    end
+  it "has the right attributes" do
+    expect(subject).to have_attributes(
+      name: "Claire Therese Riley",
+      age: 73,
+      relatives: ["Michelle Riley", "Kathleen Riley", "Patrick Riley", "John Riley"],
+      addresses: include(
+        an_instance_of(Spokeo::Domain::SimpleAddress)
+        .and have_attributes(
+          city: "Boulder", state: "CO", current: true
+        )
+      ),
+      url: a_string_including("/Claire-Riley/Colorado/Boulder")
+    )
   end
 end

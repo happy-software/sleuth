@@ -31,49 +31,59 @@ module Spokeo
         end
 
         return [] unless related_node
+
         related_node.children.map(&:text).join(" ").gsub!("#{RelatedTo} ", "").split(", ")
       end
 
       def addresses
-        lives_in = title_node.parent.children.find do |child|
+        [].tap do |addresses|
+          lives_in_addr = lives_in
+          lived_at_addr = lived_at
+
+          addresses << lives_in_addr if lives_in_addr.present?
+          addresses += lived_at_addr if lived_at_addr.present?
+        end
+      end
+
+      def lives_in
+        address = nil
+
+        lives_in_node = title_node.parent.children.find do |child|
           child.attribute_nodes.any? { |node| node.name == "type" }
         end
 
-        if lives_in
-          parsed_lived_in = lives_in.css("strong").text&.gsub!("#{ResidesIn} ", "")
+        return nil unless lives_in_node
 
-          if parsed_lived_in
-            city_state_parts = parsed_lived_in.split(", ")
-            state = city_state_parts.last
+        parsed_lived_in = lives_in_node.css("strong").text&.gsub!("#{ResidesIn} ", "")
 
-            city = city_state_parts.size > 2 ? city_state_parts[0..-2].join(", ") : city_state_parts.first
+        return nil unless parsed_lived_in
 
-            lives_in = Spokeo::Domain::SimpleAddress.new(city: city, state: state, current: true)
-          end
-        end
+        city_state_parts = parsed_lived_in.split(", ")
+        state = city_state_parts.last
 
-        lived_at = title_node.parent.children.find do |child|
+        city = city_state_parts.size > 2 ? city_state_parts[0..-2].join(", ") : city_state_parts.first
+
+        Spokeo::Domain::SimpleAddress.new(city: city, state: state, current: true)
+      end
+
+      def lived_at
+        lived_at_node = title_node.parent.children.find do |child|
           child.text.include?(LivedIn)
         end
 
-        if lived_at
-          parsed_lived_at = lived_at.children&.text&.gsub!(LivedIn, "")&.split(", ")
+        return [] unless lived_at_node
 
-          if parsed_lived_at.present?
-            lived_at = parsed_lived_at.map do |result|
-              city_state_parts = result.split(" ")
+        parsed_lived_at = lived_at_node.children&.text&.gsub!(LivedIn, "")&.split(", ")
 
-              city = city_state_parts[0..-2].join(" ")
-              state = city_state_parts[-1]
+        return [] unless parsed_lived_at.present?
 
-              Spokeo::Domain::SimpleAddress.new(city: city, state: state)
-            end
-          end
-        end
+        parsed_lived_at.map do |result|
+          city_state_parts = result.split(" ")
 
-        [].tap do |addresses|
-          addresses << lives_in if lives_in.present?
-          addresses += lived_at if lived_at.present?
+          city = city_state_parts[0..-2].join(" ")
+          state = city_state_parts[-1]
+
+          Spokeo::Domain::SimpleAddress.new(city: city, state: state)
         end
       end
 
