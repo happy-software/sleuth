@@ -3,8 +3,8 @@ require "pry"
 
 namespace :spokeo do
   task search: :environment do |_|
-    state = "florida"
-    name = "my name"
+    name = "Riley Claire"
+    state = "Colorado"
 
     search_result = Spokeo::Search.run(name: name, state: state)
 
