@@ -11,6 +11,7 @@ x-main: &main
     DB_PORT: 5432
     DB_USERNAME: postgres
     DB_PASSWORD: postgres
+    REDIS_URL: redis://redis:6379/0
   depends_on:
     - postgres
     - redis
@@ -18,10 +19,16 @@ x-main: &main
 services:
   postgres:
     image: 'postgres:13.3-alpine'
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
     volumes:
       - 'postgres:/var/lib/postgresql/data'
   redis:
     image: 'redis'
+    ports:
+      - '6379:6379'
     volumes:
       - 'redis:/data'
 

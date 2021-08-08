@@ -47,3 +47,14 @@ Style/SymbolArray:
 
 Style/WordArray:
   EnforcedStyle: brackets
+
+# In rspec, we use blocks everywhere -- this rule is always fired off
+# because  the initial describe wraps so much. Let's just disable it for
+# specs.
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+RSpec/ExampleLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+  Max: 25
