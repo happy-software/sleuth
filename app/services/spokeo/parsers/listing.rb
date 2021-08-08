@@ -13,10 +13,6 @@ module Spokeo
         @listing = listing
       end
 
-      def title_node
-        @title_node ||= @listing.at_css(TitleCssClass)
-      end
-
       def url
         @listing["href"]
       end
@@ -79,6 +75,12 @@ module Spokeo
           addresses << lives_in if lives_in.present?
           addresses += lived_at if lived_at.present?
         end
+      end
+
+      private
+
+      def title_node
+        @title_node ||= @listing.at_css(TitleCssClass)
       end
     end
   end

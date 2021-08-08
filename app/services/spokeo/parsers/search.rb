@@ -7,8 +7,12 @@ module Spokeo
         @html_string = html_string
       end
 
+      def listing_nodes
+        html_node.css(ListingCssClass)
+      end
+
       def listings
-        html_node.css(ListingCssClass).map do |listing|
+        listing_nodes.map do |listing|
           Spokeo::Parsers::Listing.new(listing)
         end
       end
