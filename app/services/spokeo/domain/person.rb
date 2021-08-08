@@ -13,7 +13,7 @@ module Spokeo
 
       def to_s
         name = full_name.dup
-        name = "#{name} related to #{related_to.join(", ")}" if related_to.any?
+        name = "#{name} related to #{related_to.join(', ')}" if related_to.any?
         name = "#{name} (Age: #{age})" unless age.nil?
         name
       end
