@@ -1,0 +1,11 @@
+defaults: &defaults
+  encryption_key: "0000000000000000000000000000000000000000000000000000000000000000"
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  encryption_key: <%= ENV["LOCKBOX_ENCRYPTION_KEY"] %>
