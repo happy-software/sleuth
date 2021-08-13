@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_09_023402) do
+ActiveRecord::Schema.define(version: 2021_08_13_164402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "data_brokers", force: :cascade do |t|
+    t.text "name"
+    t.text "url"
+    t.text "opt_out_url"
+    t.text "opt_out_type"
+    t.text "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.text "first_name_ciphertext"
