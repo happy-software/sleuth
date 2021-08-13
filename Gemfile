@@ -26,6 +26,8 @@ gem "bootsnap", ">= 1.4.4", require: false
 # gem "rack-cors"
 
 gem "httpx" # concurrent http client with an easy to use DSL
+gem "lockbox" # database encryption at the application layer
+gem "blind_index" # used for efficiently and safely querying encrypted models
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console

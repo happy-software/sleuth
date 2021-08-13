@@ -38,7 +38,7 @@ module Spokeo
 
     def find_listings
       responses = Rails.cache.fetch(search_url, expires_in: 12.hours) do
-        puts "No cache found! Fetching results, and caching."
+        Rails.logger.info "No cache found! Fetching results, and caching."
 
         if search_urls.size > 1
           HTTPX
