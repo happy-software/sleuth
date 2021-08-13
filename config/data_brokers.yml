@@ -1,0 +1,45 @@
+default: &default
+  brokers:
+    spokeo:
+      id: 1
+      url: https://www.spokeo.com
+      opt_out_url: https://www.spokeo.com/optout
+      opt_out_type: "form"
+      notes: >
+        Find your profile, and submit the URL via the opt-out form.
+    peekyou:
+      id: 2
+      url: https://www.peekyou.com
+      opt_out_url: https://www.peekyou.com/about/contact/optout/index.php
+      opt_out_type: "form"
+      notes: >
+        Find your profile, get the unique ID and use it to opt out.
+    pipl:
+      id: 3
+      url: https://pipl.com
+      opt_out_url: https://pipl.com/personal-information-removal-request
+      opt_out_type: "form"
+      notes: >
+        Submit a request to get your information removed.
+    whitepages:
+      id: 4
+      url: https://www.whitepages.com/
+      opt_out_url: https://support.whitepages.com/hc/en-us/articles/115010106908-How-do-I-edit-or-remove-a-personal-listing-
+      opt_out_type: "form"
+      notes: >
+        You MIGHT need to create an account to get your info removed.
+    epsilon_data_management:
+      id: 5
+      url: https://www.epsilon.com/us
+      opt_out_url: https://www.epsilon.com/us/marketing-data-summary-request
+      opt_out_type: "form"
+      notes: >
+        There are a few options provided. Deleting all your personal information is the route to go.
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
