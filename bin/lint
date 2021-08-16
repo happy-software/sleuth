@@ -2,4 +2,4 @@
 
 # Runs Rubocop on only modified files
 
-git status --porcelain | cut -c4- | grep ".rb" | xargs rubocop
+git status --porcelain | cut -c4- | grep ".rb" | xargs bundle exec rubocop

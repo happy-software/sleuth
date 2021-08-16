@@ -13,6 +13,10 @@ require:
   - rubocop-rails
   - rubocop-rspec
 
+inherit_mode:
+  merge:
+    - Exclude
+
 # Too short methods lead to extraction of single-use methods, which can make
 # the code easier to read (by naming things), but can also clutter the class
 Metrics/MethodLength: 
