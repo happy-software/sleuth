@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe User, type: :model do
   describe "attributes" do
     let(:instance) do
@@ -40,14 +38,20 @@ RSpec.describe User, type: :model do
 
     context "with a blind index" do
       it "are searchable" do
-        expect(User.find_by(first_name: "Roger", last_name: "Klotz", email: "roger.klotz@gmail.com")).to eq(instance)
+        result = described_class.find_by(
+          first_name: "Roger",
+          last_name: "Klotz",
+          email: "roger.klotz@gmail.com",
+        )
+
+        expect(result).to eq(instance)
       end
     end
 
     context "without a blind index" do
       it "are not searchable" do
         expect do
-          User.find_by(state: "PA", age: 25)
+          described_class.find_by(state: "PA", age: 25)
         end.to raise_error(ActiveRecord::StatementInvalid, a_string_including("column users.state does not exist"))
       end
     end

@@ -19,6 +19,6 @@ module Configurable
     template = ERB.new(content)
 
     result = template.result(binding)
-    YAML.load(result).fetch(Rails.env, {}).with_indifferent_access
+    YAML.safe_load(result).fetch(Rails.env, {}).with_indifferent_access
   end
 end
