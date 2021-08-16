@@ -19,4 +19,5 @@ jobs:
         with:
           rubocop_version: gemfile
           rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
+          rubocop_flags: --config .rubocop.yml
           github_token: ${{ secrets.GITHUB_TOKEN }}
