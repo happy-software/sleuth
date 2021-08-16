@@ -26,8 +26,7 @@ describe Spokeo::Search do
   end
 
   describe "#run" do
-    subject { described_class.new(name: "Riley-Claire", state: "Colorado") }
-
+    let(:results) { described_class.new(name: "Riley-Claire", state: "Colorado").run }
     let(:mock_html) { File.read(Rails.root.join("spec/fixtures/spokeo_response.html")) }
 
     before do
@@ -35,21 +34,27 @@ describe Spokeo::Search do
     end
 
     it "returns listings" do
-      expect(subject.run).to include(
-        an_instance_of(Spokeo::Domain::Person).and have_attributes(
-          full_name: "Claire Therese Riley",
-          profile_url: a_string_including("https://www.spokeo.com/Claire-Riley/Colorado/Boulder"),
-          age: 73,
-          related_to: ["Michelle Riley", "Kathleen Riley", "Patrick Riley", "John Riley"],
-          addresses: include(
-            an_instance_of(Spokeo::Domain::SimpleAddress).and have_attributes(
-              city: "Boulder",
-              state: "CO",
-              current: true,
+      # rubocop:disable Style/TrailingCommaInArguments
+      expect(results).to include(
+        (
+          an_instance_of(Spokeo::Domain::Person).and have_attributes(
+            full_name: "Claire Therese Riley",
+            profile_url: a_string_including("https://www.spokeo.com/Claire-Riley/Colorado/Boulder"),
+            age: 73,
+            related_to: ["Michelle Riley", "Kathleen Riley", "Patrick Riley", "John Riley"],
+            addresses: include(
+              (
+                an_instance_of(Spokeo::Domain::SimpleAddress).and have_attributes(
+                  city: "Boulder",
+                  state: "CO",
+                  current: true,
+                )
+              )
             )
-          ),
+          )
         )
       )
+      # rubocop:enable Style/TrailingCommaInArguments
     end
   end
 end

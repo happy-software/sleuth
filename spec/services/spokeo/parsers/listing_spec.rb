@@ -1,24 +1,23 @@
 describe Spokeo::Parsers::Listing do
-  let(:mock_html) { File.read(Rails.root.join("spec", "fixtures", "spokeo_response.html")) }
+  subject(:instance) { described_class.new(listing) }
 
-  let(:listing) do
-    Spokeo::Parsers::Search.new(mock_html).listing_nodes.first
-  end
-
-  subject { described_class.new(listing) }
+  let(:mock_html) { File.read(Rails.root.join("spec/fixtures/spokeo_response.html")) }
+  let(:listing) { Spokeo::Parsers::Search.new(mock_html).listing_nodes.first }
 
   it "has the right attributes" do
-    expect(subject).to have_attributes(
+    expect(instance).to have_attributes(
       name: "Claire Therese Riley",
       age: 73,
       relatives: ["Michelle Riley", "Kathleen Riley", "Patrick Riley", "John Riley"],
       addresses: include(
-        an_instance_of(Spokeo::Domain::SimpleAddress)
-        .and have_attributes(
-          city: "Boulder", state: "CO", current: true
-        )
+        (
+          an_instance_of(Spokeo::Domain::SimpleAddress)
+          .and have_attributes(
+            city: "Boulder", state: "CO", current: true,
+          )
+        ),
       ),
-      url: a_string_including("/Claire-Riley/Colorado/Boulder")
+      url: a_string_including("/Claire-Riley/Colorado/Boulder"),
     )
   end
 end
