@@ -1,4 +1,4 @@
-name: RuboCop
+name: "Style, Linting and More!"
 
 on: [pull_request]
 

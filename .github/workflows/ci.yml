@@ -1,4 +1,4 @@
-name: CI
+name: Tests/CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ master, main ]
 
 jobs:
-  test:
+  rspec:
 
     runs-on: ubuntu-latest
 
