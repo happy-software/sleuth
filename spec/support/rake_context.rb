@@ -1,14 +1,14 @@
 require "rake"
 
-shared_context "rake" do
+shared_context "when a rake task is tested" do
+  subject(:task) { rake[task_name] }
+
   let(:rake) { Rake::Application.new }
   let(:task_name) { self.class.top_level_description }
   let(:task_path) { File.join("lib", "tasks", task_name.split(":").first) }
 
-  subject { rake[task_name] }
-
   def loaded_files_excluding_current_rake_file
-    $".reject do |file|
+    $LOADED_FEATURES.reject do |file|
       file == Rails.root.join("#{task_path}.rake").to_s
     end
   end

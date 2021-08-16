@@ -41,13 +41,13 @@ module Spokeo
           lived_at_addr = lived_at
 
           addresses << lives_in_addr if lives_in_addr.present?
-          addresses += lived_at_addr if lived_at_addr.present?
+          addresses.concat(lived_at_addr) if lived_at_addr.present?
         end
       end
 
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
       def lives_in
-        address = nil
-
         lives_in_node = title_node.parent.children.find do |child|
           child.attribute_nodes.any? { |node| node.name == "type" }
         end
@@ -71,11 +71,7 @@ module Spokeo
           child.text.include?(LivedIn)
         end
 
-        return [] unless lived_at_node
-
-        parsed_lived_at = lived_at_node.children&.text&.gsub!(LivedIn, "")&.split(", ")
-
-        return [] unless parsed_lived_at.present?
+        parsed_lived_at = lived_at_node&.children&.text&.gsub!(LivedIn, "")&.split(", ") || []
 
         parsed_lived_at.map do |result|
           city_state_parts = result.split(" ")
@@ -86,6 +82,8 @@ module Spokeo
           Spokeo::Domain::SimpleAddress.new(city: city, state: state)
         end
       end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       private
 

@@ -6,8 +6,8 @@ namespace :spokeo do
     name = "Riley Claire"
     state = "Colorado"
 
-    search_result = Spokeo::Search.run(name: name, state: state)
-
-    binding.pry
+    Spokeo::Search.run(name: name, state: state)
+    # search_result = Spokeo::Search.run(name: name, state: state)
+    # binding.pry
   end
 end

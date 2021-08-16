@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Runs Rubocop on only modified files
+
+git status --porcelain | cut -c4- | grep ".rb" | xargs bundle exec rubocop --parallel

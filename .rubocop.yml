@@ -13,6 +13,10 @@ require:
   - rubocop-rails
   - rubocop-rspec
 
+inherit_mode:
+  merge:
+    - Exclude
+
 # Too short methods lead to extraction of single-use methods, which can make
 # the code easier to read (by naming things), but can also clutter the class
 Metrics/MethodLength: 
@@ -58,3 +62,11 @@ Metrics/BlockLength:
 RSpec/ExampleLength:
   CountAsOne: ['array', 'hash', 'heredoc']
   Max: 25
+
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{rails,rake}'
+    - !ruby/regexp /old_and_unused\.rb$/

@@ -1,8 +1,6 @@
-require 'rails_helper'
-
 RSpec.describe DataBroker, type: :model do
   describe "attributes" do
-    subject do
+    subject(:instance) do
       described_class.new(
         name: "lol",
         url: "lol.com",
@@ -12,15 +10,15 @@ RSpec.describe DataBroker, type: :model do
       )
     end
 
-    it {
-      is_expected.to have_attributes(
+    it "has the right attributes" do
+      expect(instance).to have_attributes(
         name: "lol",
         url: "lol.com",
         opt_out_url: "lol.com/lmao",
         opt_out_type: "form",
         notes: nil,
       )
-    }
+    end
   end
 
   describe "constants" do

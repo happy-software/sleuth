@@ -36,6 +36,7 @@ module Spokeo
 
     private
 
+    # rubocop:disable Metrics/AbcSize
     def find_listings
       responses = Rails.cache.fetch(search_url, expires_in: 12.hours) do
         Rails.logger.info "No cache found! Fetching results, and caching."
@@ -55,6 +56,7 @@ module Spokeo
         results.concat(search_parser.listings)
       end
     end
+    # rubocop:enable Metrics/AbcSize
 
     def search_url
       @search_url ||= "#{Url}/#{@name}/#{@state}".freeze
