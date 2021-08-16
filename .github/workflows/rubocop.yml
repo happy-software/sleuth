@@ -1,0 +1,22 @@
+name: RuboCop
+
+on: [pull_request]
+
+jobs:
+  rubocop:
+    runs_on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
+
+      - name: RuboCop
+        uses: reviewdog/action-rubocop@v1
+        with:
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
