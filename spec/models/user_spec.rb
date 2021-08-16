@@ -56,4 +56,9 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "relations" do
+    it { is_expected.to have_many(:user_data_brokers) }
+    it { is_expected.to have_many(:data_brokers).through(:user_data_brokers) }
+  end
 end
