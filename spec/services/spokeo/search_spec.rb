@@ -1,13 +1,15 @@
 describe Spokeo::Search do
   describe ".run" do
     it "delegates to an instance" do
-      stub = instance_double(Spokeo::Search)
+      stub = instance_double(described_class)
 
-      allow(Spokeo::Search).to receive(:new).with(name: "Riley-Claire", state: "Colorado", city: nil).and_return(stub)
+      allow(described_class).to receive(:new).with(name: "Riley-Claire", state: "Colorado", city: nil).and_return(stub)
 
-      expect(stub).to receive(:run)
+      allow(stub).to receive(:run)
 
       described_class.run(name: "Riley Claire", state: "Colorado")
+
+      expect(stub).to have_received(:run)
     end
   end
 
@@ -26,7 +28,7 @@ describe Spokeo::Search do
   describe "#run" do
     subject { described_class.new(name: "Riley-Claire", state: "Colorado") }
 
-    let(:mock_html) { File.read(Rails.root.join("spec", "fixtures", "spokeo_response.html")) }
+    let(:mock_html) { File.read(Rails.root.join("spec/fixtures/spokeo_response.html")) }
 
     before do
       allow(Rails.cache).to receive(:fetch).and_return([mock_html])
@@ -43,9 +45,9 @@ describe Spokeo::Search do
             an_instance_of(Spokeo::Domain::SimpleAddress).and have_attributes(
               city: "Boulder",
               state: "CO",
-              current: true
+              current: true,
             )
-          )
+          ),
         )
       )
     end
