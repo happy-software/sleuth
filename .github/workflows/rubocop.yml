@@ -15,10 +15,5 @@ jobs:
           bundler-cache: true
 
       - name: RuboCop
-        uses: reviewdog/action-rubocop@v1
-        with:
-          rubocop_version: gemfile
-          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
-          rubocop_flags: --config .rubocop.yml
-          filter_mode: diff_context
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./bin/lint
