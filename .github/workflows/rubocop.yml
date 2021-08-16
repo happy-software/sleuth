@@ -20,5 +20,5 @@ jobs:
           rubocop_version: gemfile
           rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rspec:gemfile
           rubocop_flags: --config .rubocop.yml
-          filter_mode: diff-context
+          filter_mode: diff_context
           github_token: ${{ secrets.GITHUB_TOKEN }}
