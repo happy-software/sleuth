@@ -1,0 +1,16 @@
+name: "Publish to GitHub Wiki"
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Publish to GitHub Wiki
+        uses: SwiftDocOrg/github-wiki-publish-action@1.0.0
+        with:
+          path: "documentation"
+        env:
+          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
