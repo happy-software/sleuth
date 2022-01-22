@@ -17,18 +17,29 @@ inherit_mode:
   merge:
     - Exclude
 
+# The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
+Metrics/ClassLength:
+  Max: 1500
+
 # Too short methods lead to extraction of single-use methods, which can make
 # the code easier to read (by naming things), but can also clutter the class
 Metrics/MethodLength: 
   Max: 20
 
-# The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
-Metrics/ClassLength:
-  Max: 1500
-
 # We don't need screaming snake case all the damn time
 Naming/ConstantName:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# If the argument key is the same name as the value, still require it
+# e.g. { foo: foo }
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
 
 # Single quotes being faster is hardly measurable and only affects parse time.
 # Enforcing double quotes reduces the times where you need to change them
@@ -37,17 +48,11 @@ Naming/ConstantName:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
+Style/SymbolArray:
+  EnforcedStyle: brackets
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: consistent_comma
-
-Style/SymbolArray:
-  EnforcedStyle: brackets
 
 Style/WordArray:
   EnforcedStyle: brackets
