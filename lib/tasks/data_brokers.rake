@@ -1,6 +1,6 @@
 namespace :data_brokers do
   task populate: :environment do |_|
-    Configuration::DataBrokers.brokers.each do |broker_name, config|
+    App::Application.config_for(:data_brokers).brokers.each do |broker_name, config|
       Rails.logger.info("Creating/Updating DataBroker##{config[:id]} (#{broker_name})")
 
       opt_out_type = config[:opt_out_type].strip
