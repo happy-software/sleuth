@@ -1,3 +1,14 @@
+# This module searches Spokeo for people.
+#
+# The main method for this class is the `.run` method on the class.
+# The state parameter is expected to be the full state name.
+#
+# Spokeo uses "-" for any whitespace in parameters.
+#
+#
+# For example:
+#   - "eobard thawne" would become "Eobard-Thawne"
+#   - "new jersey" would become "New-Jersey"
 module Spokeo
   class Search
     Url = "https://www.spokeo.com".freeze
@@ -8,6 +19,18 @@ module Spokeo
       @city = city
     end
 
+    # Search Spokeo for a person
+    #
+    # This method will convert the parameters into Spokeo-compatible
+    # parameters.
+    #
+    # Note -- the state name has to be the full state name.
+    #
+    # @param [String] name the name of the person
+    # @param [String] state the FULL state name
+    # @optional [String] city
+    #
+    # @return [Array[Spokeo::Domain::Person]]
     def self.run(name:, state:, city: nil)
       new(
         name: to_spokeo_param(name),
@@ -36,27 +59,26 @@ module Spokeo
 
     private
 
-    # rubocop:disable Metrics/AbcSize
     def find_listings
-      responses = Rails.cache.fetch(search_url, expires_in: 12.hours) do
-        Rails.logger.info "No cache found! Fetching results, and caching."
-
-        if search_urls.size > 1
-          HTTPX
-            .get(*search_urls)
-            .select { |response| response.status == 200 }
-            .map { |response| response.body.to_s }
-        else
-          [HTTPX.get(search_url).body.to_s]
-        end
-      end
+      responses = request
 
       responses.each_with_object([]) do |response, results|
         search_parser = Spokeo::Parsers::Search.new(response)
         results.concat(search_parser.listings)
       end
     end
-    # rubocop:enable Metrics/AbcSize
+
+    def request
+      Rails.cache.fetch(search_url, expires_in: 12.hours) do
+        Rails.logger.info "No cache found! Fetching results, and caching."
+
+        responses = Array.wrap(HTTPX.get(*search_urls))
+
+        responses.each_with_object([]) do |response, output|
+          output.push(response.body.to_s) if response.status == 200
+        end
+      end
+    end
 
     def search_url
       @search_url ||= "#{Url}/#{@name}/#{@state}".freeze
