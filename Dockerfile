@@ -1,5 +1,5 @@
 # Use an official Ruby runtime as a parent image
-FROM ruby:3.0.2
+FROM ruby:3.1.0
 
 ENV APP_DIR="/app/"
 RUN mkdir $APP_DIR
