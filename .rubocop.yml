@@ -17,6 +17,13 @@ inherit_mode:
   merge:
     - Exclude
 
+# The `consistent` style enforces that the first element in an array
+# literal where the opening bracket and the first element are on
+# separate lines is indented the same as an array literal which is not
+# defined inside a method call.
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
 # Too short methods lead to extraction of single-use methods, which can make
 # the code easier to read (by naming things), but can also clutter the class
 Metrics/MethodLength: 
@@ -44,6 +51,12 @@ Style/Documentation:
   Enabled: false
 
 Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
 Style/SymbolArray:

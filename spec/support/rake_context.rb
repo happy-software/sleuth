@@ -1,22 +1,33 @@
 require "rake"
 
 shared_context "when a rake task is tested" do
-  subject(:task) { rake[task_name] }
+  subject(:task) { rake_task }
 
-  let(:rake) { Rake::Application.new }
   let(:task_name) { self.class.top_level_description }
-  let(:task_path) { File.join("lib", "tasks", task_name.split(":").first) }
+  let(:rake_task) { Rake::Task.tasks.find { |task| task.name == task_name } }
 
-  def loaded_files_excluding_current_rake_file
-    $LOADED_FEATURES.reject do |file|
-      file == Rails.root.join("#{task_path}.rake").to_s
-    end
-  end
+  # this is a custom task path relative to Rails root -- useful for rake tasks defined in the spec directory
+  let(:task_path) { "" }
 
   before do
-    Rake.application = rake
-    Rake.application.rake_require(task_path, [Rails.root.to_s], loaded_files_excluding_current_rake_file)
+    Rails.application.load_tasks if Rake::Task.tasks.none?
 
-    Rake::Task.define_task(:environment)
+    if task_path.present? && Rake::Task.tasks.none? { |task| task.name == task_name }
+      Rake.application.rake_require(task_path, [Rails.root.to_s])
+    end
+
+    if rake_task.nil?
+      error_message = <<~MSG.strip
+        Attempted to run rake task #{task_name.inspect}, but could not find a matching rake task.
+        Verify that the rake task is accessible by running:
+          bundle exec rails -T
+        You can also inspect the available tasks in code by running:
+          Rake::Task.tasks
+      MSG
+
+      raise error_message
+    end
+
+    rake_task.reenable
   end
 end
