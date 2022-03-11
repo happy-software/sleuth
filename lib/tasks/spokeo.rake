@@ -18,7 +18,7 @@ namespace :spokeo do
 
     result = Spokeo::Search.run(name: name, state: state)
 
-    raise "Expected to get results for Spokeo search, but did not" if result.size == 0
+    raise "Expected to get results for Spokeo search, but did not" if result.empty?
 
     Rails.logger.tagged(rake_task.name) do
       Rails.logger.info { "OK" }
